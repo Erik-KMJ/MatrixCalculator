@@ -2,7 +2,10 @@
 #include <iostream>
 
 void MtxDisplay(float _Matrix[4][4]);
-
+void MtxAddition(float _MatrixA[4][4], float _MatrixB[4][4]);
+void MtxSubtraction(float _MatrixA[4][4], float _MatrixB[4][4]);
+void MtxMultiplicationAB(float _MatrixA[4][4], float _MatrixB[4][4]);
+void MtxMultiplicationBA(float _MatrixA[4][4], float _MatrixB[4][4]);
 
 int main()
 {
@@ -60,17 +63,19 @@ int main()
 	std::cout << "A * Scalar\n";
 
 
-	std::cout << "A + B\n";
+	std::cout << "A + B:\n";
 
+	MtxAddition(A, B);
 
 	std::cout << "A - B\n";
-
+	MtxSubtraction(A, B);
 
 	std::cout << "A * B\n";
+	MtxMultiplicationAB(A, B);
 
 
 	std::cout << "B * A\n";
-
+	MtxMultiplicationBA(A, B);
 
 	std::cout << "Identity matrix\n";
 
@@ -93,4 +98,83 @@ void MtxDisplay(float _Matrix[4][4])
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
+}
+
+void MtxAddition(float _MatrixA[4][4], float _MatrixB[4][4])
+{
+	float _ResultMatrix[4][4];
+	
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			_ResultMatrix[i][j] = _MatrixA[i][j] + _MatrixB[i][j];
+		}
+		
+	}
+	MtxDisplay(_ResultMatrix);
+}
+void MtxSubtraction(float _MatrixA[4][4], float _MatrixB[4][4])
+{
+	float _ResultMatrix[4][4];
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			_ResultMatrix[i][j] = _MatrixA[i][j] - _MatrixB[i][j];
+		}
+
+	}
+	MtxDisplay(_ResultMatrix);
+}
+void MtxMultiplicationAB(float _MatrixA[4][4], float _MatrixB[4][4])
+{
+	
+	float _ResultMatrix[4][4];
+	float _ResultFloat;
+	
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			_ResultMatrix[i][j] = 0;
+			
+			for (int k = 0; k < 4; ++k)
+			{
+				_ResultFloat = _MatrixA[i][k] * _MatrixB[k][j];
+				_ResultMatrix[i][j] = _ResultMatrix[i][j] + _ResultFloat;
+				
+			}
+			
+		}
+
+	}
+	//_ResultMatrixint = _ResultMatrix;
+	MtxDisplay(_ResultMatrix);
+}
+void MtxMultiplicationBA(float _MatrixA[4][4], float _MatrixB[4][4])
+{
+
+	float _ResultMatrix[4][4];
+	float _ResultFloat;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			_ResultMatrix[i][j] = 0;
+
+			for (int k = 0; k < 4; ++k)
+			{
+				_ResultFloat = _MatrixB[i][k] * _MatrixA[k][j];
+				_ResultMatrix[i][j] = _ResultMatrix[i][j] + _ResultFloat;
+
+			}
+
+		}
+
+	}
+	//_ResultMatrixint = _ResultMatrix;
+	MtxDisplay(_ResultMatrix);
 }
