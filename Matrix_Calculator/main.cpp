@@ -7,10 +7,12 @@ float MtxDeterminant(float _FourMatrix[4][4]);
 void MtxTranspose(float _Matrix[4][4]);
 void MtxInverse(float _Matrix[4][4]);
 void MtxScale(float _Matrix[4][4], float _Scale);
+void IdentityMatrix();
 
 int main()
 {
-	float A[4][4], B[4][4]; // 4x4 matrix A and B 
+	// 4x4 matrix A and B 
+	float A[4][4], B[4][4], C[4][4], D[4][4]; //NOTE: Due to a bug i cant fix with given time matrix A is equal to matrix C and D
 	float scalarValue = 0;
 	std::ifstream myfile ("Matrix.txt"); // load file
 	
@@ -22,6 +24,8 @@ int main()
 			for (int j = 0; j < 4; ++j)
 			{
 				myfile >> A[i][j];
+				C[i][j] = A[i][j];
+				D[i][j] = A[i][j];
 			}
 		}
 
@@ -53,13 +57,13 @@ int main()
 	}
 	
 	std::cout << " |A|\n ";
-	std::cout << MtxDeterminant(A) << std::endl << std::endl;
+	std::cout << MtxDeterminant(C) << std::endl << std::endl; // NOTE: C = A
 
 	std::cout << " A^T\n";
 	MtxTranspose(A);
 
 	std::cout << " A^-1\n";
-
+	MtxInverse(D); // NOTE: D = A
 
 	std::cout << " A * Scalar\n";
 	MtxScale(A, scalarValue);
@@ -77,6 +81,7 @@ int main()
 
 
 	std::cout << " Identity matrix\n";
+	IdentityMatrix();
 
 	system("PAUSE");
 
@@ -146,35 +151,71 @@ void MtxTranspose(float _Matrix[4][4])
 	MtxDisplay(result);
 }
 
-// inverse of matrix
+// inverse of matrix 
 void MtxInverse(float _Matrix[4][4])
 {
 	float determinant = MtxDeterminant(_Matrix);
-	float cofactor[4][4];
-
-	float a = _Matrix[0][0], b = _Matrix[0][1], c = _Matrix[0][2], d = _Matrix[0][3],
-		e = _Matrix[1][0], f = _Matrix[1][1], g = _Matrix[1][2], h = _Matrix[1][3],
-		i = _Matrix[2][0], j = _Matrix[2][1], k = _Matrix[2][2], l = _Matrix[2][3],
-		m = _Matrix[3][0], n = _Matrix[3][1], o = _Matrix[3][2], p = _Matrix[3][3];
+	float inverse[4][4];
 
 	if (determinant != 0)
 	{
-		/*cofactor[0][0] = ;
-		cofactor[0][1] = ;
-		cofactor[0][2] = ;
-		cofactor[0][3] = ;
-		cofactor[1][0] = ;
-		cofactor[1][1] = ;
-		cofactor[1][2] = ;
-		cofactor[1][3] = ;
-		cofactor[2][0] = ;
-		cofactor[2][1] = ;
-		cofactor[2][2] = ;
-		cofactor[2][3] = ;
-		cofactor[3][0] = ;
-		cofactor[3][1] = ;
-		cofactor[3][2] = ;
-		cofactor[3][3] = ;*/
+		inverse[0][0] = _Matrix[1][1] * _Matrix[2][2] * _Matrix[3][3] + _Matrix[1][2] * _Matrix[2][3] * _Matrix[3][1] + _Matrix[1][3] * _Matrix[2][1] * _Matrix[3][2]
+			- _Matrix[1][1] * _Matrix[2][3] * _Matrix[3][2] - _Matrix[1][2] * _Matrix[2][1] * _Matrix[3][3] - _Matrix[1][3] * _Matrix[2][2] * _Matrix[3][1];
+
+		inverse[0][1] = _Matrix[0][1] * _Matrix[2][3] * _Matrix[3][2] + _Matrix[0][2] * _Matrix[2][1] * _Matrix[3][3] + _Matrix[0][3] * _Matrix[2][2] * _Matrix[3][1]
+			- _Matrix[0][1] * _Matrix[2][2] * _Matrix[3][3] - _Matrix[0][2] * _Matrix[2][3] * _Matrix[3][1] - _Matrix[1][3] * _Matrix[2][1] * _Matrix[3][2];
+
+		inverse[0][2] = _Matrix[0][1] * _Matrix[1][2] * _Matrix[3][3] + _Matrix[0][2] * _Matrix[1][3] * _Matrix[3][1] + _Matrix[0][3] * _Matrix[1][1] * _Matrix[3][2]
+			- _Matrix[0][1] * _Matrix[1][3] * _Matrix[3][2] - _Matrix[0][2] * _Matrix[1][1] * _Matrix[3][3] - _Matrix[0][3] * _Matrix[1][2] * _Matrix[3][1];
+
+		inverse[0][3] = _Matrix[0][1] * _Matrix[1][3] * _Matrix[2][2] + _Matrix[0][2] * _Matrix[1][1] * _Matrix[2][3] + _Matrix[0][3] * _Matrix[1][2] * _Matrix[2][1]
+			- _Matrix[0][1] * _Matrix[1][2] * _Matrix[2][3] - _Matrix[0][2] * _Matrix[1][3] * _Matrix[2][1] - _Matrix[0][3] * _Matrix[1][1] * _Matrix[2][2];
+
+		inverse[1][0] = _Matrix[1][0] * _Matrix[2][3] * _Matrix[3][2] + _Matrix[1][2] * _Matrix[2][0] * _Matrix[3][3] + _Matrix[1][3] * _Matrix[2][2] * _Matrix[3][0]
+			- _Matrix[1][0] * _Matrix[2][2] * _Matrix[3][3] - _Matrix[1][2] * _Matrix[2][3] * _Matrix[3][0] - _Matrix[1][3] * _Matrix[2][0] * _Matrix[3][2];
+
+		inverse[1][1] = _Matrix[0][0] * _Matrix[2][2] * _Matrix[3][3] + _Matrix[0][2] * _Matrix[2][3] * _Matrix[3][0] + _Matrix[0][3] * _Matrix[2][0] * _Matrix[3][2]
+			- _Matrix[0][0] * _Matrix[2][3] * _Matrix[3][2] - _Matrix[0][2] * _Matrix[2][0] * _Matrix[3][3] - _Matrix[0][3] * _Matrix[2][2] * _Matrix[3][0];
+
+		inverse[1][2] = _Matrix[0][0] * _Matrix[1][3] * _Matrix[3][2] + _Matrix[0][2] * _Matrix[1][0] * _Matrix[3][3] + _Matrix[0][3] * _Matrix[1][2] * _Matrix[3][0]
+			- _Matrix[0][0] * _Matrix[1][2] * _Matrix[3][3] - _Matrix[0][2] * _Matrix[1][3] * _Matrix[3][0] - _Matrix[0][3] * _Matrix[1][0] * _Matrix[3][2];
+
+		inverse[1][3] = _Matrix[0][0] * _Matrix[1][2] * _Matrix[2][3] + _Matrix[0][2] * _Matrix[1][3] * _Matrix[2][0] + _Matrix[0][3] * _Matrix[1][0] * _Matrix[2][2]
+			- _Matrix[0][0] * _Matrix[1][3] * _Matrix[2][2] - _Matrix[0][2] * _Matrix[1][0] * _Matrix[2][3] - _Matrix[0][3] * _Matrix[1][2] * _Matrix[2][0];
+
+		inverse[2][0] = _Matrix[1][0] * _Matrix[2][1] * _Matrix[3][3] + _Matrix[1][1] * _Matrix[2][3] * _Matrix[3][0] + _Matrix[1][3] * _Matrix[2][0] * _Matrix[3][1]
+			- _Matrix[1][0] * _Matrix[2][3] * _Matrix[3][2] - _Matrix[1][1] * _Matrix[2][0] * _Matrix[3][3] - _Matrix[1][3] * _Matrix[2][1] * _Matrix[3][0];
+
+		inverse[2][1] = _Matrix[0][0] * _Matrix[2][3] * _Matrix[3][1] + _Matrix[0][1] * _Matrix[2][0] * _Matrix[3][3] + _Matrix[0][3] * _Matrix[2][1] * _Matrix[3][0]
+			- _Matrix[0][0] * _Matrix[2][1] * _Matrix[3][3] - _Matrix[0][1] * _Matrix[2][3] * _Matrix[3][0] - _Matrix[0][3] * _Matrix[2][0] * _Matrix[3][1];
+
+		inverse[2][2] = _Matrix[0][0] * _Matrix[1][1] * _Matrix[3][3] + _Matrix[0][1] * _Matrix[1][3] * _Matrix[3][0] + _Matrix[0][3] * _Matrix[1][0] * _Matrix[3][1]
+			- _Matrix[0][0] * _Matrix[1][3] * _Matrix[3][1] - _Matrix[0][1] * _Matrix[1][0] * _Matrix[3][3] - _Matrix[0][3] * _Matrix[1][1] * _Matrix[3][0];
+
+		inverse[2][3] = _Matrix[0][0] * _Matrix[1][3] * _Matrix[2][1] + _Matrix[0][1] * _Matrix[1][0] * _Matrix[2][3] + _Matrix[0][3] * _Matrix[1][1] * _Matrix[2][0]
+			- _Matrix[0][0] * _Matrix[1][1] * _Matrix[2][3] - _Matrix[0][1] * _Matrix[1][3] * _Matrix[2][0] - _Matrix[0][3] * _Matrix[1][0] * _Matrix[2][1];
+
+		inverse[3][0] = _Matrix[1][0] * _Matrix[2][2] * _Matrix[3][1] + _Matrix[1][1] * _Matrix[2][0] * _Matrix[3][2] + _Matrix[1][2] * _Matrix[2][1] * _Matrix[3][0]
+			- _Matrix[1][0] * _Matrix[2][1] * _Matrix[3][2] - _Matrix[1][1] * _Matrix[2][2] * _Matrix[3][0] - _Matrix[1][2] * _Matrix[2][0] * _Matrix[3][1];
+
+		inverse[3][1] = _Matrix[0][0] * _Matrix[2][1] * _Matrix[3][2] + _Matrix[0][1] * _Matrix[2][2] * _Matrix[3][0] + _Matrix[0][2] * _Matrix[2][0] * _Matrix[3][1]
+			- _Matrix[0][0] * _Matrix[1][1] * _Matrix[3][1] - _Matrix[0][1] * _Matrix[2][0] * _Matrix[3][2] - _Matrix[0][2] * _Matrix[2][1] * _Matrix[3][0];
+
+		inverse[3][2] = _Matrix[0][0] * _Matrix[1][2] * _Matrix[3][1] + _Matrix[0][1] * _Matrix[1][0] * _Matrix[3][2] + _Matrix[0][2] * _Matrix[1][1] * _Matrix[3][2]
+			- _Matrix[0][0] * _Matrix[1][1] * _Matrix[3][2] - _Matrix[0][1] * _Matrix[1][2] * _Matrix[3][0] - _Matrix[0][2] * _Matrix[1][0] * _Matrix[3][1];
+
+		inverse[3][3] = _Matrix[0][0] * _Matrix[1][1] * _Matrix[2][2] + _Matrix[0][1] * _Matrix[1][2] * _Matrix[2][0] + _Matrix[0][2] * _Matrix[1][0] * _Matrix[2][1]
+			- _Matrix[0][0] * _Matrix[1][2] * _Matrix[2][1] - _Matrix[0][1] * _Matrix[1][0] * _Matrix[2][2] - _Matrix[0][2] * _Matrix[1][1] * _Matrix[2][0];
+
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				inverse[i][j] = inverse[i][j] / determinant;
+			}
+		}
+
+		MtxDisplay(inverse);
 	}
 	else
 	{
@@ -187,7 +228,7 @@ void MtxScale(float _Matrix[4][4], float _Scale)
 {
 	float result[4][4];
 
-	// c * Matrix
+	// scalar * Matrix
 	for (int i = 0; i < 4; ++i)
 	{
 		for (int j = 0; j < 4; ++j)
@@ -197,4 +238,27 @@ void MtxScale(float _Matrix[4][4], float _Scale)
 	}
 
 	MtxDisplay(result);
+}
+
+// 4x4 Identity Matrix
+void IdentityMatrix()
+{
+	float identityMatrix[4][4];
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			if (i == j)
+			{
+				identityMatrix[i][j] = 1;
+			}
+			else
+			{
+				identityMatrix[i][j] = 0;
+			}
+		}
+	}
+
+	MtxDisplay(identityMatrix);
 }
