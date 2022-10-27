@@ -1,10 +1,9 @@
 #include <fstream>
 #include <iostream>
 
+
 void MtxDisplay(float _Matrix[4][4]);
-float TwoMtxDeterminant(float _TwoMatrix[2][2]);
-float ThreeMtxDeterminant(float _ThreeMatrix[3][3]);
-float FourMtxDeterminant(float _FourMatrix[4][4]);
+float MtxDeterminant(float _FourMatrix[4][4]);
 void MtxTranspose(float _Matrix[4][4]);
 void MtxInverse(float _Matrix[4][4]);
 void MtxScale(float _Matrix[4][4], float _Scale);
@@ -46,15 +45,15 @@ int main()
 		MtxDisplay(B);
 
 		std::cout << " Scalar Value: " << scalarValue;
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 	}
 	else
 	{
 		std::cout << " ERROR LOADING FILE!!! \n\n";
 	}
 	
-	std::cout << " |A|\n";
-
+	std::cout << " |A|\n ";
+	std::cout << MtxDeterminant(A) << std::endl << std::endl;
 
 	std::cout << " A^T\n";
 	MtxTranspose(A);
@@ -64,7 +63,6 @@ int main()
 
 	std::cout << " A * Scalar\n";
 	MtxScale(A, scalarValue);
-
 
 	std::cout << " A + B\n";
 
@@ -105,21 +103,31 @@ void MtxDisplay(float _Matrix[4][4])
 	std::cout << std::endl;
 }
 
-////determinants of a matrix
-//float TwoMtxDeterminant(float _TwoMatrix[2][2])
-//{
-//	// ad – bc
-//	
-//}
-//float ThreeMtxDeterminant(float _ThreeMatrix[3][3])
-//{
-//	// a(ei – fh) – b(di – fg) + c(dh – eg)
-//	
-//}
-//float FourMtxDeterminant(float _FourMatrix[4][4])
-//{
-//
-//}
+// determinant of a mnatrix
+float MtxDeterminant(float _Matrix[4][4])
+{
+	float c, determinant = 1;
+
+	for (int i = 0; i < 4; i++) 
+	{
+		for (int j = i + 1; j < 4; j++) 
+		{
+			c = _Matrix[j][i] / _Matrix[i][i];
+
+			for (int k = i; k < 4; k++)
+			{
+				_Matrix[j][k] = _Matrix[j][k] - c * _Matrix[i][k];
+			}	
+		}
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		determinant = determinant * _Matrix[i][i];
+	}
+		
+	return determinant;
+}
 
 // Transpose of a matrix
 void MtxTranspose(float _Matrix[4][4])
@@ -139,10 +147,40 @@ void MtxTranspose(float _Matrix[4][4])
 }
 
 // inverse of matrix
-//void MtxInverse(float _Matrix[4][4])
-//{
-//	
-//}
+void MtxInverse(float _Matrix[4][4])
+{
+	float determinant = MtxDeterminant(_Matrix);
+	float cofactor[4][4];
+
+	float a = _Matrix[0][0], b = _Matrix[0][1], c = _Matrix[0][2], d = _Matrix[0][3],
+		e = _Matrix[1][0], f = _Matrix[1][1], g = _Matrix[1][2], h = _Matrix[1][3],
+		i = _Matrix[2][0], j = _Matrix[2][1], k = _Matrix[2][2], l = _Matrix[2][3],
+		m = _Matrix[3][0], n = _Matrix[3][1], o = _Matrix[3][2], p = _Matrix[3][3];
+
+	if (determinant != 0)
+	{
+		/*cofactor[0][0] = ;
+		cofactor[0][1] = ;
+		cofactor[0][2] = ;
+		cofactor[0][3] = ;
+		cofactor[1][0] = ;
+		cofactor[1][1] = ;
+		cofactor[1][2] = ;
+		cofactor[1][3] = ;
+		cofactor[2][0] = ;
+		cofactor[2][1] = ;
+		cofactor[2][2] = ;
+		cofactor[2][3] = ;
+		cofactor[3][0] = ;
+		cofactor[3][1] = ;
+		cofactor[3][2] = ;
+		cofactor[3][3] = ;*/
+	}
+	else
+	{
+		std::cout << "There is no Inverse for the matrix\n";
+	}
+}
 
 // scale matrix
 void MtxScale(float _Matrix[4][4], float _Scale)
