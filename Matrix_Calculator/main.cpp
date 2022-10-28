@@ -1,5 +1,3 @@
-#include <fstream>
-#include <iostream>
 
 void MtxDisplay(float _Matrix[4][4]);
 void MtxAddition(float _MatrixA[4][4], float _MatrixB[4][4]);

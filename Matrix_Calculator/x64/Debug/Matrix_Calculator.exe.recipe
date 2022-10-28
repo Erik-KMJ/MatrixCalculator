@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< HEAD
       <FullPath>C:\Users\marc_\Documents\mds\Sem 2 Year 1\Math\Final Project Math\MatrixCalculator\x64\Debug\Matrix_Calculator.exe</FullPath>
+=======
+      <FullPath>C:\MatrixCalculator\x64\Debug\Matrix_Calculator.exe</FullPath>
+>>>>>>> EriksBranch
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
