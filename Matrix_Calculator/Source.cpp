@@ -14,8 +14,8 @@ int main()
 	// 4x4 matrix A and B 
 	float A[4][4], B[4][4], C[4][4], D[4][4]; //NOTE: Due to a bug i cant fix with given time matrix A is equal to matrix C and D
 	float scalarValue = 0;
-	std::ifstream myfile ("Matrix.txt"); // load file
-	
+	std::ifstream myfile("Matrix.txt"); // load file
+
 	if (myfile.is_open())
 	{
 		// setting the values of the matrix
@@ -55,7 +55,7 @@ int main()
 	{
 		std::cout << " ERROR LOADING FILE!!! \n\n";
 	}
-	
+
 	std::cout << " |A|\n ";
 	std::cout << MtxDeterminant(C) << std::endl << std::endl; // NOTE: C = A
 
@@ -113,16 +113,16 @@ float MtxDeterminant(float _Matrix[4][4])
 {
 	float c, determinant = 1;
 
-	for (int i = 0; i < 4; i++) 
+	for (int i = 0; i < 4; i++)
 	{
-		for (int j = i + 1; j < 4; j++) 
+		for (int j = i + 1; j < 4; j++)
 		{
 			c = _Matrix[j][i] / _Matrix[i][i];
 
 			for (int k = i; k < 4; k++)
 			{
 				_Matrix[j][k] = _Matrix[j][k] - c * _Matrix[i][k];
-			}	
+			}
 		}
 	}
 
@@ -130,7 +130,7 @@ float MtxDeterminant(float _Matrix[4][4])
 	{
 		determinant = determinant * _Matrix[i][i];
 	}
-		
+
 	return determinant;
 }
 
@@ -233,7 +233,7 @@ void MtxScale(float _Matrix[4][4], float _Scale)
 	{
 		for (int j = 0; j < 4; ++j)
 		{
-			result[i][j] = _Matrix[i][j] * _Scale; 
+			result[i][j] = _Matrix[i][j] * _Scale;
 		}
 	}
 
