@@ -1,0 +1,6 @@
+﻿  main.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 153 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Matrix_Calculator.vcxproj -> C:\MatrixCalculator\x64\Release\Matrix_Calculator.exe
