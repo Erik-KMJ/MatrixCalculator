@@ -9,7 +9,7 @@ void MtxInverse(float _Matrix[4][4]);
 void MtxScale(float _Matrix[4][4], float _Scale);
 void IdentityMatrix();
 
-int main()
+//int main()
 {
 	// 4x4 matrix A and B 
 	float A[4][4], B[4][4], C[4][4], D[4][4]; //NOTE: Due to a bug i cant fix with given time matrix A is equal to matrix C and D
